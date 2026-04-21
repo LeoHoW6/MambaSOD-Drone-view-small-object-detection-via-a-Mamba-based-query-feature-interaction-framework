@@ -1,0 +1,2 @@
+# MambaSOD-Drone-view-small-object-detection-via-a-Mamba-based-query-feature-interaction-framework.
+Drone small object detection needs global context and fine details under strict limits. We propose MambaSOD, an end-to-end linear-complexity model. Replacing $O(N^2)$ attention with Mamba-driven interactions, it achieves 23.8% AP on VisDrone2019. It outperforms mainstream detectors in accuracy and FLOPs, offering a superior trade-off.
