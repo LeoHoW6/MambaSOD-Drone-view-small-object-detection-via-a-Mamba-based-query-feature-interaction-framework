@@ -2,6 +2,11 @@
 
 MambaSOD is an end-to-end detection framework that combines a Vision Mamba (ViM) backbone with a bidirectional feature pyramid and a Mamba-based query decoder. It targets the small-object-heavy regime of UAV datasets such as VisDrone.
 
+## Abstract 
+Drone-perspective small object detection requires processing high-resolution imagery where objects typically occupy fewer than 32$\times$32 pixels, demanding both fine-grained spatial preservation and global context modeling under strict computational constraints. Convolutional neural networks are limited by local receptive fields and cannot effectively model global context, while Transformer-based approaches, despite their global modeling capability, suffer from $O(N^2)$ computational complexity that becomes a severe bottleneck when processing high-resolution inputs. This paper proposes MambaSOD, 
+an end-to-end detection framework with an encoder-decoder architecture based on state space models that achieves linear computational complexity throughout the entire pipeline of feature extraction, multi-scale fusion, and query interaction. On the encoder side, MambaSOD builds a linear-complexity multi-scale representation by coupling a Vision Mamba backbone with a P2 high-resolution enhancement module, which recovers fine-grained texture details through dual-path fusion of shallow image features and up-sampled backbone output, together with a BiFPN that performs weighted bidirectional fusion across five scales. On the decoder side, we replace both self-attention and cross-attention with Mamba-driven query interaction: the Mamba-based Query Self-Interaction (MQSI) module enables implicit inter-query communication through bidirectional state propagation at $O(N_q)$ cost, while the Mamba-based Query-Feature Interaction (MQFI) module reformulates query-feature cross-attention as a sequence modeling problem, reducing its complexity from $O(N_q \times N)$ to $O(N_q + N)$. Experiments on the VisDrone2019 dataset demonstrate that MambaSOD achieves 23.8\% AP, a 52.6\% relative improvement over the Vision Mamba baseline, while requiring fewer FLOPs than mainstream detectors including Cascade R-CNN, ViT, Deformable DETR, and DINO, offering a competitive accuracy--computation trade-off for high-resolution drone-perspective small object detection.
+
+
 ## Architecture
 
 ![MambaSOD Architecture](/image/MambaSOD.png)
@@ -87,6 +92,25 @@ MambaSOD/
 ├── docs/
 │   └── architecture.png        # architecture figure
 └── README.md
+```
+
+## Main Results
+
+Comparative results on VisDrone2019.
+
+
+| Method | Backbone | FLOPs (G) | Params (M) | AP (%) | AP<sub>small</sub> (%) | AP<sub>small</sub><sup>50</sup> (%) |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|
+| YOLOv8-L | CSPDarknet | 165.2 | 43.7 | 21.8 | 11.5 | - |
+| YOLOv12-L | C3k2-A2C2f | 88.9 | 26.5 | 22.9 | 12.8 | - |
+| Cascade R-CNN | ResNet-50 | 236.8 | 69.1 | 16.8 | 9.2 | 17.1 |
+| ViT | ViT-B | 478.7 | 115.0 | 19.5 | 10.6 | 21.8 |
+| Vision Mamba | ViM-T | 115.3 | 45.4 | 15.6 | 7.8 | 16.5 |
+| Deformable DETR | ResNet-50 | 173.5 | 40.1 | 21.3 | 11.6 | 23.7 |
+| Conditional DETR | ResNet-50 | 93.1 | 44.0 | 14.5 | 7.4 | 15.6 |
+| DINO | ResNet-50 | 245.6 | 48.2 | 23.6 | 13.4 | 27.4 |
+| **MambaSOD (ours)** | ViM-T | 187.6 | 74.9 | **23.8** | **14.1** | **28.7** |
+
 ```
 
 ## Acknowledgements
