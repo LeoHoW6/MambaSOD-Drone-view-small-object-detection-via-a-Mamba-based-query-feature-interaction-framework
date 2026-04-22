@@ -111,7 +111,7 @@ Comparative results on VisDrone2019.
 | DINO | ResNet-50 | 245.6 | 48.2 | 23.6 | 13.4 | 27.4 |
 | **MambaSOD (ours)** | ViM-T | 187.6 | 74.9 | **23.8** | **14.1** | **28.7** |
 
-```
+
 
 ## Acknowledgements
 
