@@ -9,7 +9,7 @@ an end-to-end detection framework with an encoder-decoder architecture based on 
 
 ## Architecture
 
-![MambaSOD Architecture](/image/MambaSOD.png)
+![MambaSOD Architecture](/image/MambaSOD2.png)
 
 The model has three main parts:
 
