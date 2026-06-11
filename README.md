@@ -98,7 +98,6 @@ MambaSOD/
 
 Comparative results on VisDrone2019.
 
-
 | Method | Backbone | FLOPs (G) | Params (M) | AP (%) | AP<sub>small</sub> (%) | AP<sub>small</sub><sup>50</sup> (%) |
 |:---|:---|:---:|:---:|:---:|:---:|:---:|
 | YOLOv8-L | CSPDarknet | 165.2 | 43.7 | 21.8 | 11.5 | - |
@@ -111,6 +110,42 @@ Comparative results on VisDrone2019.
 | DINO | ResNet-50 | 245.6 | 48.2 | 23.6 | 13.4 | 27.4 |
 | **MambaSOD (ours)** | ViM-T | 187.6 | 74.9 | **23.8** | **14.1** | **28.7** |
 
+### Comparative results on the UAVDT dataset
+All methods are trained and evaluated at 640×640 under the COCO-style protocol. Best results are in bold.
+
+| Method | Backbone | FLOPs (G) | Params (M) | AP (%) | AP<sub>small</sub> (%) | AP<sub>small</sub><sup>50</sup> (%) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| YOLOv8-L | CSPDarknet | 165.2 | 43.7 | 16.2 | 10.7 | - |
+| YOLOv12-L | C3k2-A2C2f | 88.9 | 26.5 | 16.9 | 11.6 | - |
+| Faster R-CNN | ResNet-50 | 207.1 | 69.1 | 11.0 | 8.1 | 16.8 |
+| Deformable DETR | ResNet-50 | 173.5 | 40.1 | 16.9 | 11.3 | 22.1 |
+| QueryDet | ResNet-50 | 212.3 | 33.9 | 17.3 | 11.5 | 22.6 |
+| RT-DETR | ResNet-50 | 136.0 | 42.0 | 17.7 | 11.1 | 21.8 |
+| Mamba-YOLO | ODMamba | 156.2 | 57.4 | 17.5 | 11.4 | 22.3 |
+| DINO | ResNet-50 | 245.6 | 48.2 | 18.1 | 12.0 | 23.4 |
+| **MambaSOD (ours)** | **ViM-T** | **187.6** | **74.9** | **18.4** | **13.1** | **25.2** |
+
+### Algorithm efficiency on NVIDIA Jetson AGX Xavier
+AP<sub>small</sub> is reported on VisDrone2019.
+
+| Metric | YOLOv5s | YOLOv5s+TRT | Deformable DETR | DINO | MambaSOD (ours) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Type | CNN | CNN | Transformer | Transformer | Mamba |
+| FLOPs (G) | ~16 | ~16 | ~170 | ~240 | ~180 |
+| Params (M) | 7.2 | 7.2 | 40.1 | 48.2 | 74.9 |
+| PyTorch FPS | 8 | - | ~3.3 | ~1.2 | ~2.6 |
+| TensorRT FPS (FP16) | - | ~30 | - | - | - |
+| Latency (ms) | 125 | ~33 | ~303 | ~830 | ~380 |
+| Peak GPU memory (GB) | 0.6 | ~0.4 | ~5.5 | ~8.0 | ~6.2 |
+| AP<sub>small</sub> (%) | 3.2 | 2.8 | 11.6 | 13.4 | 14.1 |
+
+### Qualitative Performance Comparison
+
+![Detection Comparison](/image/detection_comparison.png)
+
+*Figure 1: Qualitative comparison between Ground Truth (GT), DINO, and MambaSOD across three diverse scenarios. Top to bottom: daytime street, dense aerial road view, and nighttime city intersection. The right panel highlights detailed regional comparisons.*
+
+Visualizations across varying aerial conditions (daytime, high density, and low-light nighttime) demonstrate that MambaSOD's bounding box predictions align most closely with the Ground Truth. In contrast, DINO exhibits notable omissions in densely populated regions and nighttime scenes. The zoomed-in details on the right further illustrate MambaSOD's high recall and minimal redundancy when detecting exceptionally small objects (e.g., distant pedestrians, bicycles, motorcycles), validating its robust fine-grained feature capture capabilities.
 
 
 ## Acknowledgements
